@@ -1,7 +1,7 @@
 {
-  "name": "react-native-bs-image-picker",
+  "name": "bsimagepicker",
   "version": "1.0.0",
-  "description": "",
+  "description": "## Getting started",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -16,9 +16,13 @@
     "windows"
   ],
   "author": "Bhavesh Suthar",
-  "license": "",
+  "license": "ISC",
   "peerDependencies": {
     "react-native": "^0.41.2",
     "react-native-windows": "0.41.0-rc.1"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/BhaveshsMoveoapps/BSImagePicker/issues"
+  },
+  "homepage": "https://github.com/BhaveshsMoveoapps/BSImagePicker#readme"
 }
