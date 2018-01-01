@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     }
 });
 
-class BSShare {
+class RNBsImagePicker {
   static open(options) {
     return new Promise((resolve, reject) => {
       if (Platform.OS === "ios") {
@@ -46,7 +46,7 @@ class BSShare {
           }
         });
       } else {
-        NativeModules.BSShare.open(options,(e) => {
+        NativeModules.RNBsImagePicker.open(options,(e) => {
           return reject({ error: e });
         },(e) => {
           resolve({
@@ -59,7 +59,7 @@ class BSShare {
   static shareSingle(options){
     if (Platform.OS === "ios" || Platform.OS === "android") {
       return new Promise((resolve, reject) => {
-        NativeModules.BSShare.shareSingle(options,(e) => {
+        NativeModules.RNBsImagePicker.shareSingle(options,(e) => {
           return reject({ error: e });
         },(e) => {
           return resolve({
@@ -102,7 +102,7 @@ class ShareSheet extends React.Component {
 }
 
 
-module.exports = BSShare;
+module.exports = RNBsImagePicker;
 module.exports.Overlay = Overlay;
 module.exports.Sheet = Sheet;
 module.exports.Button = Button;
