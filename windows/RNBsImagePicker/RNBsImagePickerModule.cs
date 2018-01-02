@@ -1,8 +1,13 @@
+using Newtonsoft.Json.Linq;
 using ReactNative.Bridge;
 using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Core;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+
 
 namespace Bs.Image.Picker.RNBsImagePicker
 {
@@ -11,6 +16,9 @@ namespace Bs.Image.Picker.RNBsImagePicker
     /// </summary>
     class RNBsImagePickerModule : NativeModuleBase
     {
+        private readonly DataTransferManager _dataTransferManager;
+        private readonly Queue<RequestData> _queue;
+
         /// <summary>
         /// Instantiates the <see cref="RNBsImagePickerModule"/>.
         /// </summary>
@@ -20,6 +28,8 @@ namespace Bs.Image.Picker.RNBsImagePicker
           _dataTransferManager.DataRequested += DataRequested;
 
           _queue = new Queue<RequestData>();
+
+
         }
 
         /// <summary>
@@ -40,6 +50,7 @@ namespace Bs.Image.Picker.RNBsImagePicker
         [ReactMethod]
         public void open(JObject options, ICallback errorCallback, ICallback successCallback)
         {
+
             if (options != null)
             {
                 var requestData = new RequestData
@@ -54,7 +65,7 @@ namespace Bs.Image.Picker.RNBsImagePicker
                     return;
                 }
 
-                RunOnDispatcher(() =>
+                RunOnDispatcher(async() =>
                 {
                     lock (_queue)
                     {
@@ -63,8 +74,29 @@ namespace Bs.Image.Picker.RNBsImagePicker
 
                     try
                     {
-                        DataTransferManager.ShowShareUI();
-                        successCallback.Invoke("OK");
+                      FileOpenPicker openPicker = new FileOpenPicker();
+                      openPicker.ViewMode = PickerViewMode.Thumbnail;
+                      openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+                      openPicker.FileTypeFilter.Add(".jpg");
+                      openPicker.FileTypeFilter.Add(".jpeg");
+                      openPicker.FileTypeFilter.Add(".png");
+
+                      StorageFile file = await openPicker.PickSingleFileAsync();
+
+
+                      if(file != null)
+                      {
+
+                      var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
+                      successCallback.Invoke(stream);
+                      }
+                      else
+                      {
+                      //
+                        errorCallback.Invoke("not_available image");
+                      }
+                        // DataTransferManager.ShowShareUI();
+
                     }
                     catch
                     {
@@ -72,6 +104,16 @@ namespace Bs.Image.Picker.RNBsImagePicker
                     }
                 });
             }
+
+
+        }
+
+        [ReactMethod]
+        public async void shareSingle(JObject options, ICallback errorCallback, ICallback successCallback)
+        {
+            // successCallback.Invoke("invoke OK");
+
+
         }
 
         private void DataRequested(DataTransferManager sender, DataRequestedEventArgs e)

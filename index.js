@@ -17,6 +17,7 @@ import Button from './components/Button';
 const styles = StyleSheet.create({
     actionSheetContainer: {
       flex: 1,
+      width: 414,
       paddingTop: 10,
       paddingBottom: 0,
       justifyContent: "flex-end",
@@ -46,10 +47,13 @@ class RNBsImagePicker {
           }
         });
       } else {
+        console.log('1');
         NativeModules.RNBsImagePicker.open(options,(e) => {
+          console.log('e--', e);
           return reject({ error: e });
         },(e) => {
-          resolve({
+          console.log('sss e--', e);
+          return resolve({
             message: e
           });
         });
@@ -68,7 +72,16 @@ class RNBsImagePicker {
         });
       });
     } else {
-      throw new Exception("not implemented");
+      console.log('2');
+      NativeModules.RNBsImagePicker.shareSingle(options,(e) => {
+        console.log('eeee--', e);
+        return reject({ error: e });
+      },(e) => {
+        console.log('sss### e--', e);
+        return resolve({
+          message: e
+        });
+      });
     }
   }
 }
