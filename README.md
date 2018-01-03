@@ -72,7 +72,6 @@ export default class App extends Component {
           <Text>Pick Image</Text>
         </View>
       </TouchableOpacity>
-     {this.renderImage()}
      <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
        <Button onPress={()=>{
            this.onCancel();
