@@ -1,13 +1,13 @@
 
-# react-native-bs-image-picker
+# bsimagepicker
 
 ## Getting started
 
-`$ npm install react-native-bs-image-picker --save`
+`$ npm install bsimagepicker --save`
 
 ### Mostly automatic installation
 
-`$ react-native link react-native-bs-image-picker`
+`$ react-native link bsimagepicker`
 
 ### Manual installation
 
@@ -15,7 +15,7 @@
 #### iOS
 
 1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `react-native-bs-image-picker` and add `RNBsImagePicker.xcodeproj`
+2. Go to `node_modules` ➜ `bsimagepicker` and add `RNBsImagePicker.xcodeproj`
 3. In XCode, in the project navigator, select your project. Add `libRNBsImagePicker.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
 4. Run your project (`Cmd+R`)<
 
@@ -26,8 +26,8 @@
   - Add `new RNBsImagePickerPackage()` to the list returned by the `getPackages()` method
 2. Append the following lines to `android/settings.gradle`:
   	```
-  	include ':react-native-bs-image-picker'
-  	project(':react-native-bs-image-picker').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-bs-image-picker/android')
+  	include ':bsimagepicker'
+  	project(':bsimagepicker').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-bs-image-picker/android')
   	```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
   	```
