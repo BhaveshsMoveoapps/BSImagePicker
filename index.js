@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   BackHandler,
@@ -32,10 +31,10 @@ const styles = StyleSheet.create({
 });
 
 class RNBsImagePicker {
-  static open(options) {
+  static openPhotos() {
     return new Promise((resolve, reject) => {
       if (Platform.OS === "ios") {
-        ActionSheetIOS.showShareActionSheetWithOptions(options, (error) => {
+        ActionSheetIOS.showPhotos((error) => {
           return reject({ error: error });
         }, (success, activityType) => {
           if(success) {
@@ -47,45 +46,34 @@ class RNBsImagePicker {
           }
         });
       } else {
-        console.log('1');
-        NativeModules.RNBsImagePicker.open(options,(e) => {
-          console.log('e--', e);
+        NativeModules.RNBsImagePicker.showPhotos((e) => {
           return reject({ error: e });
         },(e) => {
-          console.log('sss e--', e);
-          return resolve({
-            message: e
-          });
+          return resolve(e);
         });
       }
     });
   }
-  static shareSingle(options){
+  static takePhoto(){
     if (Platform.OS === "ios" || Platform.OS === "android") {
       return new Promise((resolve, reject) => {
-        NativeModules.RNBsImagePicker.shareSingle(options,(e) => {
+        NativeModules.RNBsImagePicker.captureImage((e) => {
           return reject({ error: e });
         },(e) => {
-          return resolve({
-            message: e
-          });
+          return resolve(e);
         });
       });
     } else {
-      console.log('2');
-      NativeModules.RNBsImagePicker.shareSingle(options,(e) => {
-        console.log('eeee--', e);
+      NativeModules.RNBsImagePicker.captureImage((e) => {
         return reject({ error: e });
       },(e) => {
-        console.log('sss### e--', e);
-        return resolve({
-          message: e
-        });
+        return resolve(e);
       });
     }
   }
 }
-class ShareSheet extends React.Component {
+
+class PickerSheet extends React.Component {
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress',() => {
       if (this.props.visible) {
@@ -99,15 +87,18 @@ class ShareSheet extends React.Component {
     return (
       <Overlay visible={this.props.visible} {...this.props}>
         <View style={styles.actionSheetContainer}>
+          
           <TouchableOpacity
               style={{flex:1}}
               onPress={this.props.onCancel}>
           </TouchableOpacity>
+
           <Sheet visible={this.props.visible}>
-            <View style={styles.buttonContainer}>
-              {this.props.children}
-            </View>
+           <View style={styles.buttonContainer}>
+          	 {this.props.children}
+           </View>
           </Sheet>
+
         </View>
       </Overlay>
     )
@@ -119,4 +110,4 @@ module.exports = RNBsImagePicker;
 module.exports.Overlay = Overlay;
 module.exports.Sheet = Sheet;
 module.exports.Button = Button;
-module.exports.ShareSheet = ShareSheet;
+module.exports.PickerSheet = PickerSheet;
