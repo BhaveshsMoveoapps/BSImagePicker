@@ -1,5 +1,5 @@
 
-# bsimagepicker
+# BSImagePicker
 
 ## Getting started
 
