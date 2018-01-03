@@ -42,12 +42,75 @@
   - Add `using Bs.Image.Picker.RNBsImagePicker;` to the usings at the top of the file
   - Add `new RNBsImagePickerPackage()` to the `List<IReactPackage>` returned by the `Packages` method
 
+## Your JS File
 
-## Usage
 ```javascript
-import RNBsImagePicker from 'react-native-bs-image-picker';
+import RNBImagePicker, {ShareSheet, Button} from 'bsimagepicker';
 
-// TODO: What to do with the module?
-RNBsImagePicker;
-```
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: false,
+      imgSource: null
+    }
+  }
+  onCancel() {
+    console.log("CANCEL")
+    this.setState({visible:false});
+  }
+  onOpen() {
+    console.log("OPEN")
+    this.setState({visible:true});
+  }
   
+  render() {
+   return (
+    <View style={styles.container}>
+      <TouchableOpacity onPress={this.onOpen.bind(this)}>
+        <View style={styles.instructions}>
+          <Text>Pick Image</Text>
+        </View>
+      </TouchableOpacity>
+     {this.renderImage()}
+     <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
+       <Button onPress={()=>{
+           this.onCancel();
+           setTimeout(() => {
+             Share.open()
+             .then((response) => {
+               console.log(response);
+               this.setState({
+                 imgSource:response
+               })
+               this.renderImage()
+             })
+           },300);
+         }}>Choose From Photos</Button>
+       <Button onPress={()=>{
+           this.onCancel();
+         }}>Cancel</Button>
+     </ShareSheet>
+   </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'absolute',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+    bottom: 0
+  },
+  instructions: {
+    flex: 1,
+    marginTop: 20,
+    marginBottom: 20,
+  },
+});
+
+```
