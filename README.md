@@ -45,7 +45,7 @@
 ## Your JS File
 
 ```javascript
-import RNBImagePicker, {ShareSheet, Button} from 'bsimagepicker';
+import RNBImagePicker, {PickerSheet, Button} from 'bsimagepicker';
 
 export default class App extends Component {
   constructor(props) {
@@ -72,24 +72,23 @@ export default class App extends Component {
           <Text>Pick Image</Text>
         </View>
       </TouchableOpacity>
-     <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
+     <PickerSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
        <Button onPress={()=>{
            this.onCancel();
            setTimeout(() => {
-             Share.open()
+             RNBImagePicker.open()
              .then((response) => {
                console.log(response);
                this.setState({
                  imgSource:response
                })
-               this.renderImage()
              })
            },300);
          }}>Choose From Photos</Button>
        <Button onPress={()=>{
            this.onCancel();
          }}>Cancel</Button>
-     </ShareSheet>
+     </PickerSheet>
    </View>
     );
   }
