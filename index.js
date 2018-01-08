@@ -54,23 +54,17 @@ class RNBsImagePicker {
       }
     });
   }
-  static takePhoto(){
-    if (Platform.OS === "ios" || Platform.OS === "android") {
-      return new Promise((resolve, reject) => {
+
+ static takePhoto(){
+    return new Promise((resolve, reject) => {
         NativeModules.RNBsImagePicker.captureImage((e) => {
           return reject({ error: e });
         },(e) => {
           return resolve(e);
         });
-      });
-    } else {
-      NativeModules.RNBsImagePicker.captureImage((e) => {
-        return reject({ error: e });
-      },(e) => {
-        return resolve(e);
-      });
-    }
-  }
+    });
+  } 
+
 }
 
 class PickerSheet extends React.Component {
