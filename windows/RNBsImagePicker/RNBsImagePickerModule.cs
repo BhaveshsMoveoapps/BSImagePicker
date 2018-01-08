@@ -5,6 +5,9 @@ using Windows.UI.Core;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.Media.Capture;
+using Windows.Storage;
+using Windows.Foundation;
 
 namespace Bs.Image.Picker.RNBsImagePicker
 {
@@ -13,12 +16,16 @@ namespace Bs.Image.Picker.RNBsImagePicker
     /// </summary>
     class RNBsImagePickerModule : NativeModuleBase
     {
+        CameraCaptureUI captureUI = new CameraCaptureUI();
 
         /// <summary>
         /// Instantiates the <see cref="RNBsImagePickerModule"/>.
         /// </summary>
         internal RNBsImagePickerModule()
         {
+            captureUI.PhotoSettings.Format = CameraCaptureUIPhotoFormat.Jpeg;
+            captureUI.PhotoSettings.CroppedSizeInPixels = new Size(200, 200);
+            
             //Define 
         }
 
@@ -85,6 +92,13 @@ namespace Bs.Image.Picker.RNBsImagePicker
         public async void captureImage(ICallback errorCallback, ICallback successCallback)
         {
             successCallback.Invoke("invoke OK");
+            StorageFile photo = await captureUI.CaptureFileAsync(CameraCaptureUIMode.Photo);
+
+            if (photo == null)
+            {
+                // User cancelled photo capture
+                return;
+            }
         }
 
         private static async void RunOnDispatcher(DispatchedHandler action)
