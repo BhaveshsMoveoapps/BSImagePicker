@@ -76,7 +76,7 @@ export default class App extends Component {
        <Button onPress={()=>{
            this.onCancel();
            setTimeout(() => {
-             RNBImagePicker.open()
+             RNBImagePicker.openPhotos()
              .then((response) => {
                console.log(response);
                this.setState({
@@ -84,7 +84,19 @@ export default class App extends Component {
                })
              })
            },300);
-         }}>Choose From Photos</Button>
+         }}>Choose From Photos</Button>      
+       <Button onPress={()=>{
+           this.onCancel();
+           setTimeout(() => {
+             RNBImagePicker.takePhoto()
+             .then((response) => {
+               console.log(response);
+               this.setState({
+                 imgSource:response
+               })
+             })
+           },300);
+         }}>Take Photo</Button>
        <Button onPress={()=>{
            this.onCancel();
          }}>Cancel</Button>
